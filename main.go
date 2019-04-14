@@ -15,6 +15,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -31,7 +32,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Setup HTTP Server for receiving requests from LINE platform
+	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		fmt.Fprintln(w, "Hello World")
+	})
+
 	http.HandleFunc("/callback", func(w http.ResponseWriter, req *http.Request) {
 		events, err := bot.ParseRequest(req)
 		if err != nil {
