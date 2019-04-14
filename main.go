@@ -19,7 +19,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 )
@@ -57,23 +56,9 @@ func main() {
 			if event.Type == linebot.EventTypeMessage {
 				switch message := event.Message.(type) {
 				case *linebot.TextMessage:
-					reply := message.Text
-					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(strings.ToUpper(reply))).Do()
-					errCheck(err)
-
-					res, err := bot.GetProfile("U646949017cbacd839137847b609fd67c").Do()
-					errCheck(err)
-
-					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(res.DisplayName)).Do()
-					errCheck(err)
-
-					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(res.PictureURL)).Do()
-					errCheck(err)
-
-					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(res.StatusMessage)).Do()
-					errCheck(err)
-
-					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(res.UserID)).Do()
+					_ = message.Text
+					source := event.Source.UserID
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(source)).Do()
 					errCheck(err)
 				}
 			}
