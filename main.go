@@ -24,6 +24,12 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
+func errCheck(err error) {
+	if err != nil {
+		log.Print(err.Error())
+	}
+}
+
 func main() {
 	bot, err := linebot.New(
 		os.Getenv("CHANNEL_SECRET"),
@@ -38,7 +44,6 @@ func main() {
 	})
 
 	http.HandleFunc("/callback", func(w http.ResponseWriter, req *http.Request) {
-		log.Print(req)
 		events, err := bot.ParseRequest(req)
 		if err != nil {
 			if err == linebot.ErrInvalidSignature {
@@ -54,9 +59,22 @@ func main() {
 				case *linebot.TextMessage:
 					reply := message.Text
 					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(strings.ToUpper(reply))).Do()
-					if err != nil {
-						log.Print(err)
-					}
+					errCheck(err)
+
+					res, err := bot.GetProfile("U646949017cbacd839137847b609fd67c").Do()
+					errCheck(err)
+
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(res.DisplayName)).Do()
+					errCheck(err)
+
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(res.PictureURL)).Do()
+					errCheck(err)
+
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(res.StatusMessage)).Do()
+					errCheck(err)
+
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(res.UserID)).Do()
+					errCheck(err)
 				}
 			}
 		}
