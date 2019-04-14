@@ -23,11 +23,15 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func main() {
+func loadENV() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+}
+
+func main() {
+	loadENV()
 
 	r := gin.Default()
 	r.GET("/", router.Index)

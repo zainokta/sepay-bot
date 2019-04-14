@@ -28,7 +28,9 @@ func Callback(c *gin.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	events, err := bot.ParseRequest(c.Request)
+
 	if err != nil {
 		if err == linebot.ErrInvalidSignature {
 			c.AbortWithError(http.StatusBadGateway, err)
@@ -42,7 +44,7 @@ func Callback(c *gin.Context) {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
 				reply := message.Text
-				_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(strings.ToUpper(reply))).Do()
+				_, err = bot.PushMessage(event.Source.UserID, linebot.NewTextMessage(strings.ToUpper(reply))).Do()
 				errCheck(err)
 			}
 		}
