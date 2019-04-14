@@ -48,12 +48,10 @@ func main() {
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		fmt.Println("hello")
 		fmt.Fprintln(w, "Hello World")
 	})
 
 	http.HandleFunc("/callback", func(w http.ResponseWriter, req *http.Request) {
-		fmt.Println("message sent")
 		events, err := bot.ParseRequest(req)
 		if err != nil {
 			if err == linebot.ErrInvalidSignature {
