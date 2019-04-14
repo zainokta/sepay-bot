@@ -38,4 +38,4 @@
   go-version = "go1.11"
   install = [ "./..." ]
   ensure = "true"
-  additional-tools = ["github.com/line/line-bot-sdk-go/linebot"]
+  additional-tools = ["github.com/line/line-bot-sdk-go/linebot", "github.com/gin-gonic/gin"]

@@ -15,65 +15,23 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"net/http"
-	"os"
-	"strings"
 
-	//development
+	router "sepay-bot/controller"
 
-	//end
-	"github.com/line/line-bot-sdk-go/linebot"
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
-func errCheck(err error) {
-	if err != nil {
-		log.Print(err.Error())
-	}
-}
-
 func main() {
-	// //development
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Fatal("Error loading .env file")
-	// }
-	bot, err := linebot.New(
-		os.Getenv("CHANNEL_SECRET"),
-		os.Getenv("CHANNEL_TOKEN"),
-	)
+	err := godotenv.Load()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error loading .env file")
 	}
 
-	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		fmt.Fprintln(w, "Hello World")
-	})
+	r := gin.Default()
+	r.GET("/", router.Index)
+	r.POST("/callback", router.Callback)
 
-	http.HandleFunc("/callback", func(w http.ResponseWriter, req *http.Request) {
-		events, err := bot.ParseRequest(req)
-		if err != nil {
-			if err == linebot.ErrInvalidSignature {
-				w.WriteHeader(400)
-			} else {
-				w.WriteHeader(500)
-			}
-			return
-		}
-		for _, event := range events {
-			if event.Type == linebot.EventTypeMessage {
-				switch message := event.Message.(type) {
-				case *linebot.TextMessage:
-					reply := message.Text
-					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(strings.ToUpper(reply))).Do()
-					errCheck(err)
-				}
-			}
-		}
-	})
-
-	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
-		log.Fatal(err)
-	}
+	r.Run()
 }
