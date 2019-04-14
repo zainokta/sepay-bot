@@ -19,6 +19,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 )
@@ -56,9 +57,10 @@ func main() {
 			if event.Type == linebot.EventTypeMessage {
 				switch message := event.Message.(type) {
 				case *linebot.TextMessage:
-					_ = message.Text
-					source := event.Source.UserID
-					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(source)).Do()
+					reply := message.Text
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(strings.ToUpper(reply))).Do()
+					errCheck(err)
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("geblek")).Do()
 					errCheck(err)
 				}
 			}
