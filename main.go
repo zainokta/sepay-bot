@@ -21,6 +21,9 @@ import (
 	"os"
 	"strings"
 
+	//development
+
+	//end
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
@@ -31,6 +34,11 @@ func errCheck(err error) {
 }
 
 func main() {
+	// //development
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 	bot, err := linebot.New(
 		os.Getenv("CHANNEL_SECRET"),
 		os.Getenv("CHANNEL_TOKEN"),
@@ -40,10 +48,12 @@ func main() {
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		fmt.Println("hello")
 		fmt.Fprintln(w, "Hello World")
 	})
 
 	http.HandleFunc("/callback", func(w http.ResponseWriter, req *http.Request) {
+		fmt.Println("message sent")
 		events, err := bot.ParseRequest(req)
 		if err != nil {
 			if err == linebot.ErrInvalidSignature {
@@ -59,8 +69,6 @@ func main() {
 				case *linebot.TextMessage:
 					reply := message.Text
 					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(strings.ToUpper(reply))).Do()
-					errCheck(err)
-					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("geblek")).Do()
 					errCheck(err)
 				}
 			}
