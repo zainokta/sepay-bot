@@ -31,7 +31,7 @@ func loadENV() {
 }
 
 func main() {
-	loadENV()
+	// loadENV()
 
 	r := gin.Default()
 	r.GET("/", router.Index)
