@@ -2,16 +2,61 @@
 
 
 [[projects]]
-  digest = "1:0256f446e49ddb65e602e2e4798d13c5bb80a7621886fba5932b873d5aa903c6"
+  digest = "1:318f1c959a8a740366fce4b1e1eb2fd914036b4af58fbd0a003349b305f118ad"
+  name = "github.com/golang/protobuf"
+  packages = ["proto"]
+  pruneopts = "UT"
+  revision = "b5d812f8a3706043e23a9cd5babf2e5423744d30"
+  version = "v1.3.1"
+
+[[projects]]
+  digest = "1:2878852b67c850610b72ecbb1af6c332b46e0aca65d4477ac1ac3f40dca702d9"
   name = "github.com/line/line-bot-sdk-go"
-  packages = ["linebot"]
+  packages = [
+    "linebot",
+    "linebot/httphandler",
+  ]
   pruneopts = "UT"
   revision = "6bfb87d2637ac51fb9ff638dc8a154df23a5678a"
   version = "v6.2.0"
 
+[[projects]]
+  branch = "master"
+  digest = "1:76ee51c3f468493aff39dbacc401e8831fbb765104cbf613b89bef01cf4bad70"
+  name = "golang.org/x/net"
+  packages = ["context"]
+  pruneopts = "UT"
+  revision = "eb5bcb51f2a31c7d5141d810b70815c05d9c9146"
+
+[[projects]]
+  digest = "1:9b1928b0692138fd279f15f3ca52803b23dd779fe129f8460720290e151bea7e"
+  name = "google.golang.org/appengine"
+  packages = [
+    ".",
+    "internal",
+    "internal/app_identity",
+    "internal/base",
+    "internal/datastore",
+    "internal/log",
+    "internal/modules",
+    "internal/remote_api",
+    "internal/urlfetch",
+    "log",
+    "urlfetch",
+  ]
+  pruneopts = "UT"
+  revision = "54a98f90d1c46b7731eb8fb305d2a321c30ef610"
+  version = "v1.5.0"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["github.com/line/line-bot-sdk-go/linebot"]
+  input-imports = [
+    "github.com/line/line-bot-sdk-go/linebot",
+    "github.com/line/line-bot-sdk-go/linebot/httphandler",
+    "google.golang.org/appengine",
+    "google.golang.org/appengine/log",
+    "google.golang.org/appengine/urlfetch",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
